@@ -1,0 +1,19 @@
+.d-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+.d-col { display: flex; flex-direction: column; gap: 12px; }
+.d-field { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--muted); flex: 1 1 160px; min-width: 0; }
+.d-field input:not([type='checkbox']):not([type='color']), .d-field select, .d-field textarea, .d-btn {
+  padding: 8px 10px; font: inherit; font-size: 14px; color: var(--text);
+  background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+}
+.d-field input[type='color'] { width: 44px; height: 38px; padding: 2px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); }
+.d-btn { cursor: pointer; font-size: 13px; flex: 0 0 auto; }
+.d-btn:hover { border-color: var(--accent); }
+.d-btn--primary { color: #fff; background: var(--accent); border-color: var(--accent); }
+.d-check { display: inline-flex; gap: 8px; align-items: center; font-size: 14px; }
+.d-qr { align-self: center; padding: 12px; background: #fff; border-radius: 12px; line-height: 0; }
+.d-code { display: block; padding: 8px 10px; font-family: ui-monospace, Menlo, monospace; font-size: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; word-break: break-all; }
+.d-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+.d-card { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 13px; }
+.d-split { display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); align-items: center; }
+@media (min-width: 640px) { .d-split { grid-template-columns: minmax(0, 1fr) auto; } }
+.d-muted { margin: 0; font-size: 13px; color: var(--muted); }
