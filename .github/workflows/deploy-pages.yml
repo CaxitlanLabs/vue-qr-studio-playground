@@ -1,0 +1,71 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Permite volver a publicar a mano (por ejemplo, tras cambios en la librería).
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # El playground depende de la librería con `link:../vue-qr-studio`,
+      # así que clonamos ambos repos como carpetas hermanas.
+      - name: Checkout playground
+        uses: actions/checkout@v4
+        with:
+          path: vue-qr-studio-playground
+
+      - name: Checkout library
+        uses: actions/checkout@v4
+        with:
+          repository: CaxitlanLabs/vue-qr-studio
+          path: vue-qr-studio
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build library
+        working-directory: vue-qr-studio
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm build
+
+      - name: Build playground
+        working-directory: vue-qr-studio-playground
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}/
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm build
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: vue-qr-studio-playground/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
